@@ -1,7 +1,6 @@
 package com.mindhub.homebanking.models;
-import org.hibernate.annotations.Fetch;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.GenericGenerator;
-
 import javax.persistence.*;
 import java.time.LocalDate;
 
@@ -43,7 +42,7 @@ public class Account {
     public double getBalance() {
         return balance;
     }
-
+    @JsonIgnore
     public Client getClient() {
         return client;
     }
