@@ -10,7 +10,6 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
-
 import java.time.LocalDate;
 
 @SpringBootApplication
@@ -41,18 +40,21 @@ public class HomebankingApplication {
 			Account account4 = new Account("VIN004", LocalDate.now().plusDays(7),500000);
 			client2.addAccount(account4);
 			accountRepository.save(account4);
-			Transaction transaction1 = new Transaction(TransactionType.Debit,-15000,"Description 1",LocalDate.now());
+			Transaction transaction1 = new Transaction(TransactionType.DEBIT,-15000,"Description 1",LocalDate.now());
 			transaction1.setAccount(account1);
 			transactionRepository.save(transaction1);
-			Transaction transaction2 = new Transaction(TransactionType.Credit,15000,"Description 2",LocalDate.now());
+			Transaction transaction2 = new Transaction(TransactionType.CREDIT,15000,"Description 2",LocalDate.now());
 			transaction2.setAccount(account1);
 			transactionRepository.save(transaction2);
-			Transaction transaction3 = new Transaction(TransactionType.Credit,10000,"Description 3",LocalDate.now());
+			Transaction transaction3 = new Transaction(TransactionType.CREDIT,10000,"Description 3",LocalDate.now());
 			transaction3.setAccount(account2);
 			transactionRepository.save(transaction3);
-			Transaction transaction4 = new Transaction(TransactionType.Credit,15000,"Description 4",LocalDate.now());
+			Transaction transaction4 = new Transaction(TransactionType.CREDIT,15000,"Description 4",LocalDate.now());
 			transaction4.setAccount(account3);
 			transactionRepository.save(transaction4);
+			Transaction transaction5 = new Transaction(TransactionType.CREDIT,50000,"Description 5",LocalDate.now());
+			account3.addTransaction(transaction5);
+			transactionRepository.save(transaction5);
 		};
 	}
 }
