@@ -17,7 +17,7 @@ public class ClientController {
 
     @GetMapping("/clients")
     public List<ClientDTO> getClients(){
-        //función map()
+        //map()
         /*return clientRepository.findAll()
                                 .stream()
                                 .map(client -> new ClientDTO(client))
