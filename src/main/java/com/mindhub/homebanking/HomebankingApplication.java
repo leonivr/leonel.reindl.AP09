@@ -59,26 +59,29 @@ public class HomebankingApplication {
 			loanRepository.save(loan2);
 			Loan loan3 = new Loan("Automotriz",300000.0, Set.of(6,12,24,36));
 			loanRepository.save(loan3);
-			ClientLoan clientLoan1 = new ClientLoan(400000.0,60,client,loan1);
-			client.addClientLoan(clientLoan1);
+			ClientLoan clientLoan1 = new ClientLoan(400000.0,60);//client,loan1);//con métodos
+			client.addClientLoan(clientLoan1);//corrección Damian
+			loan1.addClientLoan(clientLoan1);
 			clientLoanRepository.save(clientLoan1);
-			clientLoan1.setLoan(loan1);
+			//clientLoan1.setLoan(loan1);
 			loanRepository.save(loan1);
 			//--------------------------------
-			ClientLoan clientLoan2 = new ClientLoan(50000.0,12,client,loan2);
+			ClientLoan clientLoan2 = new ClientLoan(50000.0,12);//client,loan2);hacer por método los campos que faltan
 			client.addClientLoan(clientLoan2);
+			loan2.addClientLoan(clientLoan2);
 			clientLoanRepository.save(clientLoan2);
-			clientLoan2.setLoan(loan2);
-			loanRepository.save(loan2);
+			//clientLoan2.setLoan(loan2);
+			//loanRepository.save(loan2);
 			//--------------------------------
 			//cliente2
-			ClientLoan clientLoan3 = new ClientLoan(100000.0,24,client2,loan2);
+			ClientLoan clientLoan3 = new ClientLoan(100000.0,24);//,client2,loan2);agregar client2 y loan 2 por métodos
 			client2.addClientLoan(clientLoan3);
+			loan3.addClientLoan(clientLoan3);
 			clientLoanRepository.save(clientLoan3);
-			clientLoan3.setLoan(loan2);
-			loanRepository.save(loan2);
+			//clientLoan3.setLoan(loan2);
+			//loanRepository.save(loan2);
 			//--------------------------------
-			ClientLoan clientLoan4 = new ClientLoan(200000.0,36,client2,loan3);
+			ClientLoan clientLoan4 = new ClientLoan(200000.0,36);//,client2,loan3);agregar client2 y loan 2 por métodos
 			client2.addClientLoan(clientLoan4);
 			clientLoanRepository.save(clientLoan4);
 			clientLoan2.setLoan(loan3);
