@@ -63,30 +63,23 @@ public class HomebankingApplication {
 			client.addClientLoan(clientLoan1);//corrección Damian
 			loan1.addClientLoan(clientLoan1);
 			clientLoanRepository.save(clientLoan1);
-			//clientLoan1.setLoan(loan1);
 			loanRepository.save(loan1);
 			//--------------------------------
 			ClientLoan clientLoan2 = new ClientLoan(50000.0,12);//client,loan2);hacer por método los campos que faltan
 			client.addClientLoan(clientLoan2);
 			loan2.addClientLoan(clientLoan2);
 			clientLoanRepository.save(clientLoan2);
-			//clientLoan2.setLoan(loan2);
-			//loanRepository.save(loan2);
 			//--------------------------------
 			//cliente2
 			ClientLoan clientLoan3 = new ClientLoan(100000.0,24);//,client2,loan2);agregar client2 y loan 2 por métodos
 			client2.addClientLoan(clientLoan3);
-			loan3.addClientLoan(clientLoan3);
+			loan2.addClientLoan(clientLoan3);
 			clientLoanRepository.save(clientLoan3);
-			//clientLoan3.setLoan(loan2);
-			//loanRepository.save(loan2);
 			//--------------------------------
 			ClientLoan clientLoan4 = new ClientLoan(200000.0,36);//,client2,loan3);agregar client2 y loan 2 por métodos
 			client2.addClientLoan(clientLoan4);
+			loan3.addClientLoan(clientLoan4);
 			clientLoanRepository.save(clientLoan4);
-			clientLoan2.setLoan(loan3);
-			loanRepository.save(loan3);
-
 			//--------------Task 5------------------
 			//cardholder tendrá el nombre y apellido del cliente concatenado
 			Card card1 = new Card(client,CardType.DEBIT,CardColor.GOLD,"3325-6745-7876-4445",990,LocalDate.now(),LocalDate.now().plusYears(5));
