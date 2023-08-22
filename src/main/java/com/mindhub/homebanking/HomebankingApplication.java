@@ -1,26 +1,29 @@
 package com.mindhub.homebanking;
 import com.mindhub.homebanking.models.*;
 import com.mindhub.homebanking.repositories.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.crypto.password.PasswordEncoder;
+
 import java.time.LocalDate;
 import java.util.Set;
 
 @SpringBootApplication
 public class HomebankingApplication {
-
-	//changes
 	public static void main(String[] args) {
 
 		SpringApplication.run(HomebankingApplication.class, args);
 
 	}
+	@Autowired
+	PasswordEncoder passwordEncoder;
 	@Bean
 	public CommandLineRunner initData(ClientRepository clientRepository, AccountRepository accountRepository, TransactionRepository transactionRepository, LoanRepository loanRepository, ClientLoanRepository clientLoanRepository,CardRepository cardRepository){
 		return (args) ->{
-			Client client = new Client("Melba","Morel","Melba@mindhub.com");
+			Client client = new Client("Melba","Morel","Melba@mindhub.com",passwordEncoder.encode("1"),RoleType.CLIENT);
 			clientRepository.save(client);
 			Account account1 = new Account("VIN001", LocalDate.now(),5000);
 			client.addAccount(account1);
@@ -28,7 +31,7 @@ public class HomebankingApplication {
 			Account account2 = new Account("VIN002", LocalDate.now().plusDays(1),7500);
 			client.addAccount(account2);
 			accountRepository.save(account2);
-			Client client2 = new Client("Leonel","Reindl","LeoReindl@gmail.com");
+			Client client2 = new Client("Leonel","Reindl","leo@gmail.com",passwordEncoder.encode("2"),RoleType.ADMIN);
 			clientRepository.save(client2);
 			Account account3 = new Account("VIN003", LocalDate.now(),100000);
 			client2.addAccount(account3);
@@ -81,13 +84,15 @@ public class HomebankingApplication {
 			loan3.addClientLoan(clientLoan4);
 			clientLoanRepository.save(clientLoan4);
 			//--------------Task 5------------------
-			//cardholder tendrá el nombre y apellido del cliente concatenado
 			Card card1 = new Card(client,CardType.DEBIT,CardColor.GOLD,"3325-6745-7876-4445",990,LocalDate.now(),LocalDate.now().plusYears(5));
 			cardRepository.save(card1);
 			Card card2 = new Card(client,CardType.CREDIT,CardColor.TITANIUM,"2234-6745-552-7888",750,LocalDate.now(),LocalDate.now().plusYears(5));
 			cardRepository.save(card2);
 			Card card3 = new Card(client2,CardType.CREDIT,CardColor.SILVER,"0705-9121-0769-0908",222,LocalDate.now(),LocalDate.now().plusYears(5));
 			cardRepository.save(card3);
+			//Task 6
+			/*--------------------------------------------------------------------------------------*/
+
 		};
 	}
 }
