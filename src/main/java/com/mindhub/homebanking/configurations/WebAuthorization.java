@@ -18,32 +18,28 @@ public class WebAuthorization {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                //WORSKSHOP//
-                /*.antMatchers("/web/login.html","/web/css/**","/web/img/**","/web/js/**").permitAll()
-                .antMatchers(HttpMethod.POST,"/app/login","app/logout","/**").permitAll()
-                .antMatchers("web/admin.html").hasAuthority("ADMIN")
-                .antMatchers("/api/clients").hasAuthority("ADMIN")
-                .antMatchers("/web/**").hasAnyAuthority("USER","ADMIN");*/
-                //SÁBADO
-                /*.antMatchers("/web/index.html","/web/css/**","/web/img/**","/web/js/**").permitAll()
-                  .antMatchers("/api/clients").permitAll()
-                  .antMatchers("/admin/**").hasAuthority("ADMIN")
-                  .antMatchers("/**").hasAuthority("CLIENT")
-                  .antMatchers(HttpMethod.POST,"/app/login","app/logout","/**").permitAll()
-                  .antMatchers("/web/index.html","/web/css/**","/web/img/**","/web/js/**").permitAll()
-                  .antMatchers("/api/clients","/h2-console","/rest/**").hasAuthority("ADMIN")
-                  /*.anyRequest().denyAll()*/
-                .antMatchers("/web/index.html","/web/css/**","/web/img/**","/web/js/**","/api/login","/api/logout").permitAll()
+                /*.antMatchers("/web/index.html","/web/css/**","/web/img/**","/web/js/**","/api/login","/api/logout").permitAll()
                 .antMatchers(HttpMethod.POST, "/api/clients").permitAll()
-                .antMatchers("/api/clients","/h2-console","/rest/**").hasAuthority("ADMIN");
-
-                /*.antMatchers(HttpMethod.GET, "/api/clients").hasRole("ADMIN").anyRequest().denyAll()*/
-                /*.antMatchers(HttpMethod.GET, "/api/clients").hasRole("ADMIN")*/
+                .antMatchers("/api/clients","/h2-console","/rest/**").hasAuthority("ADMIN")
+                .antMatchers("/api/clients/{id}").hasAuthority("CLIENT");*/
+                //-.antMatchers(HttpMethod.POST,"/api/login","/api/logout","/api/clients").permitAll()
+                //-.antMatchers("/web/index.html","/web/css/**","/web/img/**","/web/js/**").permitAll()
+                //-.antMatchers("/api/clients/current/accounts","/api/clients/current/cards"/*"/web/accounts.html","/api/accounts/{id}","/web/accounts/{id}","/web/cards.html","/web/transfers.html","*/,"/web/**").hasAnyAuthority("CLIENT","ADMIN")
+                //NO VA.antMatchers("/api/clients/{id}","/api/account/{id}").hasAuthority("CLIENT")
+                //-.antMatchers("/api/clients/","/h2-console","/rest/**").hasAuthority("ADMIN");
+                //NO VA.anyRequest().denyAll() PADRE NUESTRO QUE ESTAS EN LOS CIELOS...;
+                .antMatchers("/web/index.html" ).permitAll()
+                .antMatchers("/web/css/", "/web/js/", "/web/img/" ).permitAll()
+                .antMatchers(HttpMethod.POST, "/api/clients", "/api/accounts", "/api/clients/current/accounts" ).permitAll()
+                .antMatchers("/web/", "/api/accounts/{id}" ).authenticated()
+                .antMatchers("/admin/","/h2-console/", "/rest/" ).hasAuthority("ADMIN")
+                .antMatchers(HttpMethod.GET,"/api/clients/current", "/api/clients/current/accounts", "/api/clients/current/cards" ).hasAnyAuthority("CLIENT","ADMIN")
+                .antMatchers("/" ).denyAll();
         http.formLogin()
                 .usernameParameter("email")
                 .passwordParameter("password")
                 .loginPage("/api/login");
-        http.logout().logoutUrl("/api/logout");
+        http.logout().logoutUrl("/api/logout").deleteCookies("JSESSIONID");
         //turn off checking for CSRF tokens
         http.csrf().disable();
         //disabling frameOptions so h2-console can be accessed
