@@ -13,6 +13,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import static java.util.stream.Collectors.toList;
 
@@ -78,7 +79,7 @@ public class ClientController {
                 randomAccount = "VIN" + random;
             }
         } while (accountRepository.existsByNumber(randomAccount));
-        Account currentAccount = new Account(randomAccount, LocalDate.now(), 0);
+        Account currentAccount = new Account(randomAccount, LocalDateTime.now(), 0);
         return currentAccount;
     }
 }

@@ -2,13 +2,14 @@ package com.mindhub.homebanking.dtos;
 
 import com.mindhub.homebanking.models.Account;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 public class AccountDTO {
     private Long id;
     private String number;
-    private LocalDate creationDate;
+    private LocalDateTime creationDate;
     private double balance;
     private Set<TransactionDTO> transactions;
     public AccountDTO(Account account) {
@@ -27,7 +28,7 @@ public class AccountDTO {
         return number;
     }
 
-    public LocalDate getDate() {
+    public LocalDateTime getDate() {
         return creationDate;
     }//getCreationDate-getDate
 

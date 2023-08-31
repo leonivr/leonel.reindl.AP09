@@ -3,6 +3,7 @@ package com.mindhub.homebanking.models;
 import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 public class Card {
@@ -16,11 +17,11 @@ public class Card {
     private CardType type;
     private CardColor color;
     private String number;
-    private int cvv;//VERIFICAR TIPO DE DATO
-    private LocalDate fromDate;
-    private LocalDate thruDate;
+    private int cvv;
+    private LocalDateTime fromDate;
+    private LocalDateTime thruDate;
     public Card(){}
-    public Card(Client cardholder, CardType type, CardColor color, String number, int cvv, LocalDate fromDate, LocalDate thruDate) {
+    public Card(Client cardholder, CardType type, CardColor color, String number, int cvv, LocalDateTime fromDate, LocalDateTime thruDate) {
         this.cardholder = cardholder;
         this.type = type;
         this.color = color;
@@ -54,11 +55,11 @@ public class Card {
         return cvv;
     }
 
-    public LocalDate getFromDate() {
+    public LocalDateTime getFromDate() {
         return fromDate;
     }
 
-    public LocalDate getThruDate() {
+    public LocalDateTime getThruDate() {
         return thruDate;
     }
 
@@ -82,11 +83,11 @@ public class Card {
         this.cvv = cvv;
     }
 
-    public void setFromDate(LocalDate fromDate) {
+    public void setFromDate(LocalDateTime fromDate) {
         this.fromDate = fromDate;
     }
 
-    public void setThruDate(LocalDate thruDate) {
+    public void setThruDate(LocalDateTime thruDate) {
         this.thruDate = thruDate;
     }
 
@@ -95,16 +96,4 @@ public class Card {
         return this.cardholder.getFirstName()+" "+this.cardholder.getLastName();
     }
 
-   public static String cardNumberGenerator(){
-        String cardNumber ="";
-        for(int i=0;i<4;i++){
-            int num = (int) ((Math.random() * (9999 - 1000)) + 1000);
-            if(i!=3){
-                cardNumber += num + "-";
-            }else {
-                cardNumber += num;
-            }
-       }
-        return cardNumber;
-    }
 }

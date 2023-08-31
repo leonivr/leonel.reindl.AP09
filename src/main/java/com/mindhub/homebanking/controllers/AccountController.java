@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import static java.util.stream.Collectors.toList;
 
@@ -68,7 +69,7 @@ public class AccountController {
             } while (accountRepository.existsByNumber(randomAccount));
             System.out.println("Cliente:" + client.getFirstName() + " " + client.getLastName());
             System.out.println("Nueva Cuenta:" + randomAccount);
-            Account currentAccount = new Account(randomAccount, LocalDate.now(), 0);
+            Account currentAccount = new Account(randomAccount, LocalDateTime.now(), 0);
             accountRepository.save(currentAccount);
             client.addAccount(currentAccount);
             clientRepository.save(client);

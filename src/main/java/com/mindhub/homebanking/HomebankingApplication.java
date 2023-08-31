@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Set;
 
 @SpringBootApplication
@@ -25,33 +26,33 @@ public class HomebankingApplication {
 		return (args) ->{
 			Client client = new Client("Melba","Morel","Melba@mindhub.com",passwordEncoder.encode("1"),RoleType.CLIENT);
 			clientRepository.save(client);
-			Account account1 = new Account("VIN001", LocalDate.now(),5000);
+			Account account1 = new Account("VIN001", LocalDateTime.now(),5000);
 			client.addAccount(account1);
 			accountRepository.save(account1);
-			Account account2 = new Account("VIN002", LocalDate.now().plusDays(1),7500);
+			Account account2 = new Account("VIN002", LocalDateTime.now().plusDays(1),7500);
 			client.addAccount(account2);
 			accountRepository.save(account2);
 			Client client2 = new Client("Leonel","Reindl","leo@gmail.com",passwordEncoder.encode("2"),RoleType.ADMIN);
 			clientRepository.save(client2);
-			Account account3 = new Account("VIN003", LocalDate.now(),100000);
+			Account account3 = new Account("VIN003", LocalDateTime.now(),100000);
 			client2.addAccount(account3);
 			accountRepository.save(account3);
-			Account account4 = new Account("VIN004", LocalDate.now().plusDays(7),500000);
+			Account account4 = new Account("VIN004", LocalDateTime.now().plusDays(7),500000);
 			client2.addAccount(account4);
 			accountRepository.save(account4);
-			Transaction transaction1 = new Transaction(TransactionType.DEBIT,-15000,"Description 1",LocalDate.now());
+			Transaction transaction1 = new Transaction(TransactionType.DEBIT,-15000,"Description 1",LocalDateTime.now());
 			transaction1.setAccount(account1);
 			transactionRepository.save(transaction1);
-			Transaction transaction2 = new Transaction(TransactionType.CREDIT,15000,"Description 2",LocalDate.now());
+			Transaction transaction2 = new Transaction(TransactionType.CREDIT,15000,"Description 2",LocalDateTime.now());
 			transaction2.setAccount(account1);
 			transactionRepository.save(transaction2);
-			Transaction transaction3 = new Transaction(TransactionType.CREDIT,10000,"Description 3",LocalDate.now());
+			Transaction transaction3 = new Transaction(TransactionType.CREDIT,10000,"Description 3",LocalDateTime.now());
 			transaction3.setAccount(account2);
 			transactionRepository.save(transaction3);
-			Transaction transaction4 = new Transaction(TransactionType.CREDIT,15000,"Description 4",LocalDate.now());
+			Transaction transaction4 = new Transaction(TransactionType.CREDIT,15000,"Description 4",LocalDateTime.now());
 			transaction4.setAccount(account3);
 			transactionRepository.save(transaction4);
-			Transaction transaction5 = new Transaction(TransactionType.CREDIT,50000,"Description 5",LocalDate.now());
+			Transaction transaction5 = new Transaction(TransactionType.CREDIT,50000,"Description 5",LocalDateTime.now());
 			account3.addTransaction(transaction5);
 			transactionRepository.save(transaction5);
 
@@ -84,11 +85,11 @@ public class HomebankingApplication {
 			loan3.addClientLoan(clientLoan4);
 			clientLoanRepository.save(clientLoan4);
 			//--------------Task 5------------------
-			Card card1 = new Card(client,CardType.DEBIT,CardColor.GOLD,"3325-6745-7876-4445",990,LocalDate.now(),LocalDate.now().plusYears(5));
+			Card card1 = new Card(client,CardType.DEBIT,CardColor.GOLD,"3325-6745-7876-4445",990,LocalDateTime.now(),LocalDateTime.now().plusYears(5));
 			cardRepository.save(card1);
-			Card card2 = new Card(client,CardType.CREDIT,CardColor.TITANIUM,"2234-6745-552-7888",750,LocalDate.now(),LocalDate.now().plusYears(5));
+			Card card2 = new Card(client,CardType.CREDIT,CardColor.TITANIUM,"2234-6745-552-7888",750,LocalDateTime.now(),LocalDateTime.now().plusYears(5));
 			cardRepository.save(card2);
-			Card card3 = new Card(client2,CardType.CREDIT,CardColor.SILVER,"0705-9121-0769-0908",222,LocalDate.now(),LocalDate.now().plusYears(5));
+			Card card3 = new Card(client2,CardType.CREDIT,CardColor.SILVER,"0705-9121-0769-0908",222,LocalDateTime.now(),LocalDateTime.now().plusYears(5));
 			cardRepository.save(card3);
 			//Task 6
 			/*--------------------------------------------------------------------------------------*/

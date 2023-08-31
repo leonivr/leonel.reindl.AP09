@@ -10,7 +10,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 import static java.util.stream.Collectors.toList;
 
@@ -30,8 +32,7 @@ public class CardController {
     @PostMapping("/clients/current/cards")
     public ResponseEntity<Object> createCard(@RequestParam CardColor cardColor, @RequestParam CardType cardType, Authentication authentication){
         Client client = clientRepository.findByEmail(authentication.getName());
-        List<CardType> types = client.getCards().stream().map(Card::getType).collect(Collectors.toList());
-        //List<CardColor> colors = client.getCards().stream().map(Card::getColor).collect(Collectors.toList());
+        /*leo-List<CardType> types = client.getCards().stream().map(Card::getType).collect(Collectors.toList());
         int credit = 0;
         int debit = 0;
         for (CardType type: types ){
@@ -68,6 +69,32 @@ public class CardController {
             return new ResponseEntity<>("created", HttpStatus.CREATED);
         }else{
             return  new ResponseEntity<>("Reached the maximum number of cards allowed",HttpStatus.FORBIDDEN);
+        }-leo*/
+        Set<Card> cards = client.getCards();
+        if(!cards.stream().filter(card -> card.getType().equals(cardType)).filter(card -> card.getColor().equals(cardColor)).collect(Collectors.toSet()).isEmpty()){
+            return new ResponseEntity<>("Card already exists",HttpStatus.FORBIDDEN);
         }
+        String random;
+        int cvv = (int) ((Math.random() * (999 - 100)) + 100);
+        do{
+            random = cardNumberGenerator();//method static en Card
+        }while (cardRepository.existsByNumber(random));
+        Card card = new Card(client,cardType,cardColor,random,cvv, LocalDateTime.now(), LocalDateTime.now().plusYears(5));
+        cardRepository.save(card);
+        client.addCard(card);
+        clientRepository.save(client);
+        return new ResponseEntity<>("created", HttpStatus.CREATED);
+    }
+    public String cardNumberGenerator(){
+        String cardNumber ="";
+        for(int i=0;i<4;i++){
+            int num = (int) ((Math.random() * (9999 - 1000)) + 1000);
+            if(i!=3){
+                cardNumber += num + "-";
+            }else {
+                cardNumber += num;
+            }
+        }
+        return cardNumber;
     }
 }
