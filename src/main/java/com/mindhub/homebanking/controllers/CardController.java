@@ -4,6 +4,8 @@ import com.mindhub.homebanking.dtos.CardDTO;
 import com.mindhub.homebanking.models.*;
 import com.mindhub.homebanking.repositories.CardRepository;
 import com.mindhub.homebanking.repositories.ClientRepository;
+import com.mindhub.homebanking.services.CardService;
+import com.mindhub.homebanking.services.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,18 +22,32 @@ import static java.util.stream.Collectors.toList;
 @RequestMapping("api")
 public class CardController {
     @Autowired
-    private CardRepository cardRepository;
+    private CardService cardService;
     @Autowired
-    private ClientRepository clientRepository;
+    private ClientService clientService;
 
     @GetMapping("/clients/current/cards")//
     public List<CardDTO> getCards(Authentication authentication){
-        Client client = clientRepository.findByEmail(authentication.getName());
+        Client client = clientService.findByEmail(authentication.getName());
         return client.getCards().stream().map(CardDTO::new).collect(toList());
     }
     @PostMapping("/clients/current/cards")
     public ResponseEntity<Object> createCard(@RequestParam CardColor cardColor, @RequestParam CardType cardType, Authentication authentication){
-        Client client = clientRepository.findByEmail(authentication.getName());
+        Client client = clientService.findByEmail(authentication.getName());
+        Set<Card> cards = client.getCards();
+        if(!cards.stream().filter(card -> card.getType().equals(cardType)).filter(card -> card.getColor().equals(cardColor)).collect(Collectors.toSet()).isEmpty()){
+            return new ResponseEntity<>("Card already exists",HttpStatus.FORBIDDEN);
+        }
+        String random;
+        int cvv = (int) ((Math.random() * (999 - 100)) + 100);
+        do{
+            random = cardService.cardNumberGenerator();
+        }while (cardService.existsByNumber(random));
+        Card card = new Card(client,cardType,cardColor,random,cvv, LocalDateTime.now(), LocalDateTime.now().plusYears(5));
+        cardService.save(card);
+        client.addCard(card);
+        clientService.save(client);
+        return new ResponseEntity<>("created", HttpStatus.CREATED);
         /*leo-List<CardType> types = client.getCards().stream().map(Card::getType).collect(Collectors.toList());
         int credit = 0;
         int debit = 0;
@@ -70,31 +86,5 @@ public class CardController {
         }else{
             return  new ResponseEntity<>("Reached the maximum number of cards allowed",HttpStatus.FORBIDDEN);
         }-leo*/
-        Set<Card> cards = client.getCards();
-        if(!cards.stream().filter(card -> card.getType().equals(cardType)).filter(card -> card.getColor().equals(cardColor)).collect(Collectors.toSet()).isEmpty()){
-            return new ResponseEntity<>("Card already exists",HttpStatus.FORBIDDEN);
-        }
-        String random;
-        int cvv = (int) ((Math.random() * (999 - 100)) + 100);
-        do{
-            random = cardNumberGenerator();//method static en Card
-        }while (cardRepository.existsByNumber(random));
-        Card card = new Card(client,cardType,cardColor,random,cvv, LocalDateTime.now(), LocalDateTime.now().plusYears(5));
-        cardRepository.save(card);
-        client.addCard(card);
-        clientRepository.save(client);
-        return new ResponseEntity<>("created", HttpStatus.CREATED);
-    }
-    public String cardNumberGenerator(){
-        String cardNumber ="";
-        for(int i=0;i<4;i++){
-            int num = (int) ((Math.random() * (9999 - 1000)) + 1000);
-            if(i!=3){
-                cardNumber += num + "-";
-            }else {
-                cardNumber += num;
-            }
-        }
-        return cardNumber;
     }
 }

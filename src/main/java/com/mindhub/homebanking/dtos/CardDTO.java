@@ -57,7 +57,6 @@ public class CardDTO {
         return thruDate;
     }
     //
-
     public String getCardHolder() {
         return cardHolder;
     }

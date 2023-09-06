@@ -11,14 +11,14 @@ public class LoanDto {
     private double maxAmount;
     @ElementCollection
     private Set<Integer> payments;
-    private Set<ClientLoanDTO> loans;
+    //private Set<ClientLoanDTO> loans;
 
     public LoanDto(Loan loan) {
         id = loan.getId();
         name = loan.getName();
         maxAmount = loan.getMaxAmount();
         payments = loan.getPayments();
-        loans = loan.getClientLoans().stream().map(ClientLoanDTO::new).collect(Collectors.toSet());
+        //loans = loan.getClientLoans().stream().map(ClientLoanDTO::new).collect(Collectors.toSet());
     }
 
     public Long getId() {
@@ -37,7 +37,7 @@ public class LoanDto {
         return payments;
     }
 
-    public Set<ClientLoanDTO> getClientLoans() {
+    /*public Set<ClientLoanDTO> getClientLoans() {
         return loans;
-    }
+    }*/
 }

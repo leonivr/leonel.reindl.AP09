@@ -5,6 +5,8 @@ import com.mindhub.homebanking.models.Account;
 import com.mindhub.homebanking.models.Client;
 import com.mindhub.homebanking.repositories.AccountRepository;
 import com.mindhub.homebanking.repositories.ClientRepository;
+import com.mindhub.homebanking.services.AccountService;
+import com.mindhub.homebanking.services.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,10 +21,12 @@ import static java.util.stream.Collectors.toList;
 @RequestMapping("api")
 public class AccountController {
     @Autowired
-    private AccountRepository accountRepository;
+    private AccountService accountService;
+    @Autowired
+    private ClientService clientService;
     @GetMapping("/clients/current/accounts")//accounts
     public List<AccountDTO> getAccounts(Authentication authentication){
-        Client client= clientRepository.findByEmail(authentication.getName());
+        Client client= clientService.findByEmail(authentication.getName());
         return client.getAccounts().stream().map(AccountDTO::new).collect(toList());
         //return accountRepository.findAll().stream().map(AccountDTO::new).collect(toList());
     }
@@ -30,12 +34,11 @@ public class AccountController {
     public AccountDTO getAccountById(@PathVariable Long id){
         return new AccountDTO(accountRepository.findById(id).orElse(null));
     }*/
-    @Autowired
-    private ClientRepository clientRepository;//
+
     @GetMapping("/accounts/{id}")
     public ResponseEntity<AccountDTO> getAccount(@PathVariable Long id, Authentication authentication){
-        Account account = accountRepository.findById(id).orElse(null);
-        Client client = clientRepository.findByEmail(authentication.getName());
+        Account account = accountService.findById(id);
+        Client client = clientService.findByEmail(authentication.getName());
         if(account == null){
             return new ResponseEntity("Cuenta no encontrada",HttpStatus.BAD_GATEWAY);
         }
@@ -53,7 +56,7 @@ public class AccountController {
     }*/
     @PostMapping("/clients/current/accounts")//Crear Cuenta
     public ResponseEntity<Object> createAccount(Authentication authentication){
-        Client client = clientRepository.findByEmail(authentication.getName());
+        Client client = clientService.findByEmail(authentication.getName());
         if (client.getAccounts().size()<3) {
             int random;
             String randomAccount;
@@ -66,13 +69,13 @@ public class AccountController {
                 }else {
                     randomAccount = "VIN" + random;
                 }
-            } while (accountRepository.existsByNumber(randomAccount));
+            } while (accountService.existsByNumber(randomAccount));
             System.out.println("Cliente:" + client.getFirstName() + " " + client.getLastName());
             System.out.println("Nueva Cuenta:" + randomAccount);
             Account currentAccount = new Account(randomAccount, LocalDateTime.now(), 0);
-            accountRepository.save(currentAccount);
+            accountService.save(currentAccount);
             client.addAccount(currentAccount);
-            clientRepository.save(client);
+            clientService.save(client);
             return new ResponseEntity<>("Created", HttpStatus.CREATED);
         }else{
             return new ResponseEntity<>("El cliente ya posee el máximo de cuentas permitidas",HttpStatus.FORBIDDEN);

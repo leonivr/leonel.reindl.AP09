@@ -30,9 +30,9 @@ public class WebAuthorization {
                 //NO VA.anyRequest().denyAll() PADRE NUESTRO QUE ESTAS EN LOS CIELOS...;
                 .antMatchers("/web/index.html" ).permitAll()
                 .antMatchers("/web/css/", "/web/js/", "/web/img/" ).permitAll()
-                .antMatchers(HttpMethod.POST, "/api/clients", "/api/accounts", "/api/clients/current/accounts" ).permitAll()
-                .antMatchers("/web/", "/api/accounts/{id}" ).authenticated()
-                .antMatchers("/admin/","/h2-console/", "/rest/" ).hasAuthority("ADMIN")
+                .antMatchers(HttpMethod.POST, "/api/clients", "/api/accounts", "/api/clients/current/accounts","/api/login" ).permitAll()
+                .antMatchers("/web/", "/api/accounts/{id}","/api/clients/{id}" ).authenticated()//--"/api/clients/{id}"
+                .antMatchers("/admin/","/h2-console/", "/rest/","/api/clients","/api/accounts" ).hasAuthority("ADMIN")//api/clients, /api/accounts
                 .antMatchers(HttpMethod.GET,"/api/clients/current", "/api/clients/current/accounts", "/api/clients/current/cards","/api/transactions" ).hasAnyAuthority("CLIENT","ADMIN")
                 .antMatchers("/" ).denyAll();
         http.formLogin()
