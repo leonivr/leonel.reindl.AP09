@@ -19,7 +19,7 @@ public class HomebankingApplication {
 		SpringApplication.run(HomebankingApplication.class, args);
 
 	}
-	@Autowired
+	/*@Autowired
 	PasswordEncoder passwordEncoder;
 	@Bean
 	public CommandLineRunner initData(ClientRepository clientRepository, AccountRepository accountRepository, TransactionRepository transactionRepository, LoanRepository loanRepository, ClientLoanRepository clientLoanRepository,CardRepository cardRepository){
@@ -91,9 +91,6 @@ public class HomebankingApplication {
 			cardRepository.save(card2);
 			Card card3 = new Card(client2,CardType.CREDIT,CardColor.SILVER,"0705-9121-0769-0908",222,LocalDateTime.now(),LocalDateTime.now().plusYears(5));
 			cardRepository.save(card3);
-			//Task 6
-			/*--------------------------------------------------------------------------------------*/
-
 		};
-	}
+	}*/
 }
