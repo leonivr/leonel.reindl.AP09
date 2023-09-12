@@ -5,5 +5,6 @@ import com.mindhub.homebanking.models.Card;
 public interface CardService {
     boolean existsByNumber(String number);
     void save(Card card);
-    String cardNumberGenerator(); //Retorna número de tarjeta
+
+    //String getCardNumber(); Implements in CardUtils
 }

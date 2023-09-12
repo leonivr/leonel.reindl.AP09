@@ -6,6 +6,7 @@ import com.mindhub.homebanking.repositories.CardRepository;
 import com.mindhub.homebanking.repositories.ClientRepository;
 import com.mindhub.homebanking.services.CardService;
 import com.mindhub.homebanking.services.ClientService;
+import com.mindhub.homebanking.utils.CardUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -39,9 +40,9 @@ public class CardController {
             return new ResponseEntity<>("Card already exists",HttpStatus.FORBIDDEN);
         }
         String random;
-        int cvv = (int) ((Math.random() * (999 - 100)) + 100);
+        int cvv = CardUtils.getCvv();
         do{
-            random = cardService.cardNumberGenerator();
+            random = CardUtils.getCardNumber();
         }while (cardService.existsByNumber(random));
         Card card = new Card(client,cardType,cardColor,random,cvv, LocalDateTime.now(), LocalDateTime.now().plusYears(5));
         cardService.save(card);

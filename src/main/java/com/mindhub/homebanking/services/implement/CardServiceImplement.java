@@ -18,8 +18,9 @@ public class CardServiceImplement implements CardService {
     public void save(Card card) {
         cardRepository.save(card);
     }
-    @Override
-    public String cardNumberGenerator() {
+
+    /*@Override //IMPLEMENT EN CardUtils
+    public String getCardNumber() {
         String cardNumber ="";
         for(int i=0;i<4;i++){
             int num = (int) ((Math.random() * (9999 - 1000)) + 1000);
@@ -30,6 +31,5 @@ public class CardServiceImplement implements CardService {
             }
         }
         return cardNumber;
-    }
-
+    }*/
 }
