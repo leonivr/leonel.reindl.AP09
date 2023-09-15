@@ -11,10 +11,10 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 import static org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace.NONE;
 
-/*@DataJpaTest
-@AutoConfigureTestDatabase(replace = NONE)*/
+@DataJpaTest
+@AutoConfigureTestDatabase(replace = NONE)
 public class RepositoriesTest {
-    /*@Autowired
+    @Autowired
     LoanRepository loanRepository;
     @Test
     public void existLoans(){
@@ -25,5 +25,5 @@ public class RepositoriesTest {
     public void existPersonalLoan(){
         List<Loan> loans = loanRepository.findAll();
         assertThat(loans, hasItem(hasProperty("name", is("Personal"))));
-    }*/
+    }
 }
